@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPO Table</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-l0Obw1H48Oj9uOPoIiIZMl+x60B2MU0w5F5NndIuUY+3/vmbbmYLNvj0YIsd5tzIGvhJnsb7ir5Hj+gIM3lHpg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="app.js"></script>
+    <style>
+        /* Define your CSS styles here */
+        .pagination {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .pagination button {
+            margin: 0 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .pagination button.active {
+            background-color: whitesmoke;
+            color: blue;
+        }
+
+        
+    </style>
+    <script>
+       
+
+
+
+
+        $(document).ready(function(){
+            // Sample data, replace with your dynamic data handling
+            var ipoData = [
+                { company: "Adani Power", priceBand: "₹ 129 - 136 ", open: "2024-06-03", close: "2024-06-05", issueSize: "130.15Cr.", issueType: "Book Built", listingDate: "2024-06-10", status: "Ongoing" },
+                { company: "VBLLTD", priceBand: "₹ 129 - 136 ", open: "2024-06-03", close: "2024-06-05", issueSize: "130.15Cr.", issueType: "Book Built", listingDate: "2024-06-10", status: "Comming" },
+                { company: "Tata Motor",priceBand: "₹ 129 - 136 ", open: "2024-06-03", close: "2024-06-05", issueSize: "130.15Cr.", issueType: "Book Built", listingDate: "2024-06-10", status: "New Listed" },
+                { company: "BSE India", priceBand: "₹ 129 - 136 ", open: "2024-06-03", close: "2024-06-05", issueSize: "130.15Cr.", issueType: "Book Built", listingDate: "2024-06-10", status: "Comming" },
+                
+            ];
+
+            
+
+            var currentPage = 1;
+            var rowsPerPage = 4;
+
+            function displayTable() {
+                var startIndex = (currentPage - 1) * rowsPerPage;
+                var endIndex = startIndex + rowsPerPage;
+                var tableBody = $('#ipoTable tbody');
+                tableBody.empty();
+                for (var i = startIndex; i < endIndex && i < ipoData.length; i++) {
+                    var row = $('<tr>');
+                    row.append($('<td>').text(ipoData[i].company));
+                    row.append($('<td>').text(ipoData[i].priceBand));
+                    row.append($('<td>').text(ipoData[i].open));
+                    row.append($('<td>').text(ipoData[i].close));
+                    row.append($('<td>').text(ipoData[i].issueSize));
+                    row.append($('<td>').text(ipoData[i].issueType));
+                    row.append($('<td>').text(ipoData[i].listingDate));
+                    row.append($('<td>').text(ipoData[i].status));
+                    // Assuming `row` is your table row variable
+                         
+                    // Update Button
+                    var updateButton = $('<button>').text('Update');
+                    updateButton.click(function() {
+                      // Navigate to a new page
+                    window.open('', '_blank');
+                   });
+                     row.append($('<td>').append(updateButton));
+
+
+                    // Delete/View Button
+                    var deleteViewButton = $('<button>').text('Delete/View');
+                    deleteViewButton.click(function() {
+                    // Remove the row containing the button
+                    $(this).closest('tr').remove();
+                    console.log('Row deleted');
+                   });
+                   row.append($('<td>').append(deleteViewButton));
+
+
+                    tableBody.append(row);
+                }
+
+
+        
+            }
+
+
+
+
+            
+
+            function setupPagination() {
+                var totalPages = Math.ceil(ipoData.length / rowsPerPage);
+                var pagination = $('.pagination');
+                pagination.empty();
+                for (var i = 1; i <= totalPages; i++) {
+                    var button = $('<button>').text(i);
+                    if (i === currentPage) {
+                        button.addClass('active');
+                    }
+                    button.click(function(){
+                        currentPage = parseInt($(this).text());
+                        displayTable();
+                        $('.pagination button').removeClass('active');
+                        $(this).addClass('active');
+                    });
+                    pagination.append(button);
+                }
+            }
+
+            displayTable();
+            setupPagination();
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <nav>
+            <div style="display: flex; align-items: center;">
+                <h1 style="flex: 1;">Upcoming IPO | Dashboard</h1>
+                <ul style="list-style-type: none; margin: 0; padding: 0;">
+                    <li id="viewButton" class="active" style="display: inline-block; background-color: whitesmoke; color: blue; padding: 10px 20px; border-radius: 5px; cursor: pointer;">View Page</li>
+                
+                </ul>
+            </div>
+        </nav>
+        
+            
+            
+        
+    </header>
+
+
+    
+    <table id="ipoTable">
+        <thead>
+            <tr>
+                <th>Company</th>
+                <th>Price Band</th>
+                <th>Open</th>
+                <th>Close</th>
+                <th>Issue Size</th>
+                <th>Issue Type</th>
+                <th>Listing Date</th>
+                <th>Status</th>
+                <th>Action</th>
+                <th>Delete/View</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Rows will be dynamically added here -->
+        </tbody>
+    </table>
+    <div class="pagination">
+        
+    </div>
+</body>
+</html>
